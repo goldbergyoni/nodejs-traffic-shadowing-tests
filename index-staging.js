@@ -1,37 +1,70 @@
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
+const bodyParser = require('body-parser');
+
 
 const port = process.argv[2] || 8000;
 const app = express();
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({
+    server
+});
 
 app.use(express.static('public'));
+app.use(bodyParser.json());
 
 const connections = [];
-const state = { cats: 0, dogs: 0 };
+const state = {
+    ferrari: 0,
+    fiat: 0,
+    skoda: 0,
+    alfaRomeo: 0,
+    vespa: 0,
+    tesla: 0,
+    audi: 0
+};
 
-app.get('/vote/cats', (_req, res) => {
-    console.log('A vote for 🐱');
-    addVotes({ cats: 1 });
-    res.sendStatus(204);
+app.post('/event/:car', (req, res) => {
+    try {
+        console.log(`🚔 Car ${req.params.car} sent a msg ${JSON.stringify(req.body)}`);
+        state[req.params.car]++;
+
+        saveEventInDB(req.body);
+
+        processBusinessRules(req.body);
+
+        notifySubscribers();
+
+        res.sendStatus(200);
+    } catch (error) {
+        console.error("Error occured" , error);
+        res.sendStatus(500);
+    }
+
 });
 
-app.get('/vote/dogs', (_req, res) => {
-    console.log('A vote for 🐶');
-    addVotes({ dogs: 1 });
-    res.sendStatus(204);
-});
+const processBusinessRules = (msg) => {
+    if(msg.engine.temperature > 120){
+        shutOffTracker(msg.id);
+    }
+}
+
+const shutOffTracker =(id)=>{
+
+}
+
+const saveEventInDB = (msg) => {
+
+}
+
 
 wss.on('connection', (ws) => {
     connections.push(ws);
     ws.send(JSON.stringify(state));
 });
 
-const addVotes = ({ cats = 0, dogs = 0 }) => {
-    state.cats = state.cats + cats;
-    state.dogs = state.dogs + dogs;
+const notifySubscribers = () => {
     connections.forEach(ws => ws.send(JSON.stringify(state)));
 };
 

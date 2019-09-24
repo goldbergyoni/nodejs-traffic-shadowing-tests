@@ -64,20 +64,30 @@
     </div>
 
     <script>
+        function postEvent(car, payload){
+            const response = fetch(`/event/${car}`, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(payload) // body data type must match "Content-Type" header
+        });
+        }
         document.getElementById("body").style.backgroundColor =
             "#" + ((1 << 24) * Math.random() | 0).toString(16)
 
-        voteCats = () => fetch('/vote/cats')
-        voteDogs = () => fetch('/vote/dogs')
+        voteCats = () => postEvent('audi', {id:1, engine:{temperature:90}});
+        voteDogs = () => postEvent('fiat', {id:2});
 
         const socket = new WebSocket(`ws://${window.location.host}`);
         socket.addEventListener('message', event => {
             const {
-                dogs,
-                cats
+                audi,
+                fiat
             } = JSON.parse(event.data);
-            document.getElementById("catVotes").innerHTML = `votes: ${cats}`;
-            document.getElementById("dogVotes").innerHTML = `votes: ${dogs}`;
+            document.getElementById("catVotes").innerHTML = `votess: ${audi}`;
+            document.getElementById("dogVotes").innerHTML = `votess: ${fiat}`;
         });
     </script>
 
