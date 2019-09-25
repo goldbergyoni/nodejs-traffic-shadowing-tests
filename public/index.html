@@ -48,6 +48,12 @@
     <div class="main">
         <h1>Cats vs. Dogs!</h1>
 
+        <span id='youtube-holder' style="display: none;">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/qdDVtFvJwUc?start=15&autoplay=1"
+                frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </span>
+
         <div style="display: flex; justify-content:space-around">
             <div>
                 <img src="cat.jpg" height="300px" width="400px">
@@ -64,33 +70,50 @@
     </div>
 
     <script>
-        function postEvent(car, payload){
+        function postEvent(car, payload) {
             const response = fetch(`/event/${car}`, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: JSON.stringify(payload) // body data type must match "Content-Type" header
-        });
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: JSON.stringify(payload) // body data type must match "Content-Type" header
+            });
         }
         document.getElementById("body").style.backgroundColor =
             "#" + ((1 << 24) * Math.random() | 0).toString(16)
 
-        voteCats = () => postEvent('audi', {id:1, engine:{temperature:90}});
-        voteDogs = () => postEvent('fiat', {id:2});
+
+
+        voteCats = () => postEvent('audi', {
+            id: 1,
+            engine: {
+                temperature: 90
+            }
+        });
+        voteDogs = () => {
+            postEvent('fiat', {
+                id: 2
+            });
+        }
 
         const socket = new WebSocket(`ws://${window.location.host}`);
         socket.addEventListener('message', event => {
+            console.info(event.data);
+            const payload = JSON.parse(event.data);
+            if (payload.messageType === 'error') {
+                document.getElementById("youtube-holder").style.display = 'block';
+                return;
+            }
+
             const {
                 audi,
                 fiat
-            } = JSON.parse(event.data);
+            } = payload.state;
             document.getElementById("catVotes").innerHTML = `votess: ${audi}`;
             document.getElementById("dogVotes").innerHTML = `votess: ${fiat}`;
         });
     </script>
-
 </body>
 
 </html>

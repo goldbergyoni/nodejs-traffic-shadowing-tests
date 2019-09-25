@@ -34,11 +34,12 @@ app.post('/event/:car', (req, res) => {
 
         processBusinessRules(req.body);
 
-        notifySubscribers();
+        notifySubscribers({messageType: 'stateUpdate', state});
 
         res.sendStatus(200);
     } catch (error) {
         console.error("Error occured" , error);
+        notifySubscribers({messageType: 'error'});
         res.sendStatus(500);
     }
 
@@ -64,8 +65,8 @@ wss.on('connection', (ws) => {
     ws.send(JSON.stringify(state));
 });
 
-const notifySubscribers = () => {
-    connections.forEach(ws => ws.send(JSON.stringify(state)));
+const notifySubscribers = (message) => {
+    connections.forEach(ws => ws.send(JSON.stringify(message)));
 };
 
 server.listen(port, () => console.log(`Demo app listening on port ${port}!`));
