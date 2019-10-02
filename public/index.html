@@ -81,11 +81,11 @@
         <div class="innerBox">
           <img id="kidLogo" src="./assets/kid.png" alt="kid" />
           <span id="youtube-holder">
-                <video width="400px" height="300px" autoplay="autoplay" controls id="jestin-video">
-                    <source src="/assets/jestin.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                      </video>
-          </span>
+                <video width="640" height="480" controls id="jestin-video">
+                    <source src="/assets/jestin-low-quality.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </span>
         </div>
         <button onclick="simulate()" class="simulator">Simulate</button>
       </div>
@@ -180,7 +180,7 @@
         if (payload.messageType === 'error') {
           document.getElementById('kidLogo').style.display = 'none';
           document.getElementById('youtube-holder').style.display = 'block';
-          //document.getElementById('jestin-video').play();
+          document.getElementById('jestin-video').play();
           document.getElementById('status-title').innerText = 'Jest fails? Jestin plays!';
           return;
         }
