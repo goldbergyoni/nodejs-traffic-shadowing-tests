@@ -81,13 +81,10 @@
         <div class="innerBox">
           <img id="kidLogo" src="./assets/kid.png" alt="kid" />
           <span id="youtube-holder">
-            <iframe
-              style="width: 100% ;height: 100%;"
-              src="https://www.youtube.com/embed/qdDVtFvJwUc?start=15&autoplay=1"
-              frameborder="0"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
+                <video width="400px" height="300px" autoplay="autoplay" controls id="jestin-video">
+                    <source src="/assets/jestin.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                      </video>
           </span>
         </div>
         <button onclick="simulate()" class="simulator">Simulate</button>
@@ -183,6 +180,7 @@
         if (payload.messageType === 'error') {
           document.getElementById('kidLogo').style.display = 'none';
           document.getElementById('youtube-holder').style.display = 'block';
+          //document.getElementById('jestin-video').play();
           document.getElementById('status-title').innerText = 'Jest fails? Jestin plays!';
           return;
         }
