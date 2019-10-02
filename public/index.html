@@ -19,7 +19,8 @@
 
   <body id="body">
     <div class="main">
-      <h2 class="title">Traffic shadowing</h2>
+      <h1 class="title">Smart Car Garage</h1>
+      <br/>
       <div class="flexRow pad">
         <div
           onclick="postEvent('alfaRomeo',{id: 1 ,engine:{temperature: 55}})"
@@ -76,7 +77,7 @@
         </div>
       </div>
       <div class="simulate">
-        <h4 class="status">Status</h4>
+        <h3 class="status" id="status-title">Status</h2>
         <div class="innerBox">
           <img id="kidLogo" src="./assets/kid.png" alt="kid" />
           <span id="youtube-holder">
@@ -182,6 +183,7 @@
         if (payload.messageType === 'error') {
           document.getElementById('kidLogo').style.display = 'none';
           document.getElementById('youtube-holder').style.display = 'block';
+          document.getElementById('status-title').innerText = 'Jest fails? Jestin plays!';
           return;
         }
 

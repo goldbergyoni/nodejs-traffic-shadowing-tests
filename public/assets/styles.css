@@ -31,7 +31,6 @@ button {
 .title {
   text-align: center;
   margin: 10px 0;
-  display: none;
 }
 
 .flexRow {
@@ -42,12 +41,12 @@ button {
 }
 
 .flexRow.pad {
-  padding: 0 60px;
+  padding: 0 30px;
 }
 
 .car {
-  width: 160px;
-  height: 160px;
+  width: 140px;
+  height: 140px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -83,8 +82,8 @@ button {
 
 .innerBox {
   border: 1px solid black;
-  width: 280px;
-  height: 280px;
+  width: 400px;
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
