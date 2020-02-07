@@ -4,7 +4,9 @@
 
 
 ## Motivation
-TBD 
+A 10 min intro and demo of traffic shadowing with Node.js code
+
+[![](http://img.youtube.com/vi/sWuF_TyPBWo/0.jpg)](http://www.youtube.com/watch?v=sWuF_TyPBWo "")
 
 ## How To Play The Demo
  - Run npm install
