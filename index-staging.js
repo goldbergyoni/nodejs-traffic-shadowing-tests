@@ -2,12 +2,9 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const bodyParser = require('body-parser');
-const expressHarCapture = require('express-har-capture');
-
 
 const port = process.argv[2] || 8000;
 const app = express();
-app.use(expressHarCapture({}))
 const server = http.createServer(app);
 const wss = new WebSocket.Server({
     server
@@ -34,14 +31,14 @@ app.post('/event/:car', (req, res) => {
 
         saveEventInDB(req.body);
 
-        processBusinessRules(req.body);
+        const result = processBusinessRules(req.body);
 
         notifySubscribers({
             messageType: 'stateUpdate',
             state
         });
 
-        res.sendStatus(200);
+        res.json(result).status(200);
     } catch (error) {
         console.error("Error occured", error);
         notifySubscribers({
@@ -54,8 +51,12 @@ app.post('/event/:car', (req, res) => {
 
 const processBusinessRules = (msg) => {
     if (msg.engine.temperature > 120) {
-        shutOffTracker(msg.id);
+        return {
+            shutoff: true
+        }
     }
+
+    return {};
 }
 
 const shutOffTracker = (id) => {

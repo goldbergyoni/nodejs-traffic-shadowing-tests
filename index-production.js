@@ -2,17 +2,25 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const bodyParser = require('body-parser');
-
+const expressHarCapture = require('express-har-capture');
 
 const port = process.argv[2] || 8000;
 const app = express();
+app.use(express.static('public'));
+app.use(bodyParser.json());
+app.use(expressHarCapture({
+    mapRequestToName: () => {
+
+    },
+    saveBody: true,
+    harOutputDir: "request-records-har"
+}))
 const server = http.createServer(app);
 const wss = new WebSocket.Server({
     server
 });
 
-app.use(express.static('public'));
-app.use(bodyParser.json());
+
 
 const connections = [];
 const state = {
@@ -32,26 +40,36 @@ app.post('/event/:car', (req, res) => {
 
         saveEventInDB(req.body);
 
-        processBusinessRules(req.body);
+        const result = processBusinessRules(req.body);
 
-        notifySubscribers({messageType: 'stateUpdate', state});
+        notifySubscribers({
+            messageType: 'stateUpdate',
+            state
+        });
 
-        res.sendStatus(200);
+        res.json(result).status(200);
     } catch (error) {
-        console.error("Error occured" , error);
-        notifySubscribers({messageType: 'error'});
+        console.error("Error occured", error);
+        notifySubscribers({
+            messageType: 'error'
+        });
         res.sendStatus(500);
     }
 
 });
 
 const processBusinessRules = (msg) => {
-    // if(msg.engine.temperature > 120){
-    //     shutOffTracker(msg.id);
-    // }
+    if (msg.engine.temperature > 120) {
+        return {
+            shutoff: true
+        }
+    }
+
+    return {};
 }
 
-const shutOffTracker =(id)=>{
+
+const shutOffTracker = (id) => {
 
 }
 
@@ -70,3 +88,6 @@ const notifySubscribers = (message) => {
 };
 
 server.listen(port, () => console.log(`Demo app listening on port ${port}!`));
+
+module.exports.expressApp = app;
+module.exports.server = server;
