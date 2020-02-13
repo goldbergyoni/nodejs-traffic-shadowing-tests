@@ -3,8 +3,7 @@ const express = require('express');
 const sinon = require('sinon');
 const nock = require('nock');
 const uuid = require('uuid');
-const fs = require('fs').promises;
-const path = require('path');
+const productionRequests = require('./production-requests.json');
 
 const {
     server,
@@ -12,11 +11,12 @@ const {
 } = require('../index-production');
 
 beforeAll(async (done) => {
-    done()
+    done();
 });
 
 afterAll(() => {
     if (server) {
+        console.log("close");
         server.close();
     }
 });
@@ -30,30 +30,30 @@ beforeEach(() => {
 
 /*eslint-disable */
 describe('/api #production', () => {
-    describe("POST /events", async () => {
-        console.log("Starting");
-        const allHarFiles = await fs.readdir("./request-records-har");
+    describe("POST /events", () => {
         const allRequests = [];
 
-        allHarFiles.forEach(async (fileName) => {
-            const fileContent = await fs.readFile('./request-records-har', {
-                encoding: 'utf-8'
-            });
-            const fileContentAsJSON = JSON.parse(path.join("./request-records-har", fileContent));
-            fileContentAsJSON.log.entries.forEach((aRecordedRequest) => {
-                allRequests.push([aRecordedRequest.request.url, aRecordedRequest.request.postData.text, aRe.response.status]);
-            })
+        beforeAll(async (done) => {
+
+            done();
+        })
+
+        test('should something', () => {
+            console.log("foo", allRequests)
+            expect(true).toBe(true);
         });
 
-        test.each(allRequests)(`When calling ${a}`, async (url, body, expectedResponse) => {
+        test.each(productionRequests.productionRequests)(`When calling`, async (url, body, expectedResponse) => {
+            console.log(url, body.expectedResponse)
             //Arrange
+
             //Act
             const receivedAPIResponse = await request(expressApp)
                 .post(url)
                 .send(body);
 
             //Assert
-            expect(receivedAPIResponse.body).toBe(expectedResponse)
+            expect(receivedAPIResponse.status).toBe(expectedResponse)
 
         });
     });

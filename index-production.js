@@ -4,7 +4,7 @@ const WebSocket = require('ws');
 const bodyParser = require('body-parser');
 const expressHarCapture = require('express-har-capture');
 
-const port = process.argv[2] || 8000;
+const port = process.env.PORT || 8000;
 const app = express();
 app.use(express.static('public'));
 app.use(bodyParser.json());
