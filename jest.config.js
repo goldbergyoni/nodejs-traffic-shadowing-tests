@@ -85,10 +85,10 @@ module.exports = {
   // modulePathIgnorePatterns: [],
 
   // Activates notifications for test results
-  // notify: false,
+  notify: true,
 
   // An enum that specifies notification mode. Requires { notify: true }
-  // notifyMode: "failure-change",
+  notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
   // preset: undefined,
@@ -186,4 +186,8 @@ module.exports = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+  "watchPlugins": [
+    "jest-watch-typeahead/filename",
+    "jest-watch-typeahead/testname"
+  ]
 };

@@ -38,23 +38,16 @@ describe('/api #production', () => {
             done();
         })
 
-        test('should something', () => {
-            console.log("foo", allRequests)
-            expect(true).toBe(true);
-        });
+        test.each(productionRequests.all)(`When calling %s, expect response status to be %s`, async (url, expectedResponse, body) => {
+            // Arrange
 
-        test.each(productionRequests.productionRequests)(`When calling`, async (url, body, expectedResponse) => {
-            console.log(url, body.expectedResponse)
-            //Arrange
-
-            //Act
+            // Act
             const receivedAPIResponse = await request(expressApp)
                 .post(url)
                 .send(body);
 
-            //Assert
+            // Assert
             expect(receivedAPIResponse.status).toBe(expectedResponse)
-
         });
     });
 });

@@ -26,7 +26,7 @@ beforeEach(() => {
 
 
 /*eslint-disable */
-describe('/api', () => {
+describe('/api #traditional', () => {
     describe("POST /events", () => {
         test("When OBD-spec-2 reporting high temperature , shut off device", async () => {
 

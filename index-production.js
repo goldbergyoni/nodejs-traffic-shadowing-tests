@@ -2,25 +2,27 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const bodyParser = require('body-parser');
-const expressHarCapture = require('express-har-capture');
+const expressHarRecorder = require('./middlewares/har-recorder');
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || undefined; //That's OK, Express will randomize something for us
 const app = express();
 app.use(express.static('public'));
 app.use(bodyParser.json());
-app.use(expressHarCapture({
-    mapRequestToName: () => {
+if (process.env.RECORD_REQUESTS === 'true') {
+    app.use(expressHarRecorder({
+        sample: 0.5,
+        saveBody: true,
+        harOutputDir: "request-records-har",
+        uploadToS3: true,
+        uploadToS3IntervalInSeconds: 10,
+        AWSToken: process.env.AWS_TOKEN
+    }))
+}
 
-    },
-    saveBody: true,
-    harOutputDir: "request-records-har"
-}))
 const server = http.createServer(app);
 const wss = new WebSocket.Server({
     server
 });
-
-
 
 const connections = [];
 const state = {
@@ -59,7 +61,8 @@ app.post('/event/:car', (req, res) => {
 });
 
 const processBusinessRules = (msg) => {
-    if (msg.engine.temperature > 120) {
+
+    if (msg.engine.temperature > 120    ) {
         return {
             shutoff: true
         }
@@ -87,7 +90,7 @@ const notifySubscribers = (message) => {
     connections.forEach(ws => ws.send(JSON.stringify(message)));
 };
 
-server.listen(port, () => console.log(`Demo app listening on port ${port}!`));
+server.listen(port, () => console.log(`Demo app listening on port ${server.address().port}!`));
 
 module.exports.expressApp = app;
 module.exports.server = server;

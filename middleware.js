@@ -2,7 +2,6 @@ var gor = require("goreplay_middleware");
 // `init` will initialize STDIN listener
 gor.init();
 console.error("Starting");
-
 gor.on("request", function(req) {
     console.error("Request");
     gor.on("response", req.ID, function(resp) {
