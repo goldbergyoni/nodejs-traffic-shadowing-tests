@@ -1,209 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Traffic Shadowing</title>
 
-    <meta charset="utf-8" />
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<head>
+  <meta charset="UTF-8" />
+  <title>Traffic Shadowing</title>
 
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="./assets/styles.css" />
-  </head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
-  <body id="body">
-    <div class="main">
-      <h1 class="title">Smart Car Garage</h1>
-      <br/>
-      <div class="flexRow pad">
-        <div
-          onclick="postEvent('alfaRomeo',{id: 1 ,engine:{temperature: 55}})"
-          class="car"
-        >
-          <img src="./assets/alfa.png" alt="alfaRomeo" />
-          <div class="vote" id="alfaRomeo">Updates: 0</div>
-        </div>
-        <div
-          onclick="postEvent('audi',{id:2 ,engine:{temperature: 99}})"
-          class="car"
-        >
-          <img src="./assets/audi.png" alt="audi" />
-          <div class="vote" id="audi">Updates: 0</div>
-        </div>
-      </div>
-      <div class="flexRow">
-        <div onclick="postEvent('vespa',{id:7})" class="car">
-          <img src="./assets/vespa.png" alt="vespa" />
-          <div class="vote" id="vespa">Updates: 0</div>
-        </div>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="./assets/styles.css" />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 
-        <div
-          onclick="postEvent('fiat',{id: 4,engine:{temperature: 60}})"
-          class="car"
-        >
-          <img src="./assets/fiat.png" alt="fiat" />
-          <div class="vote" id="fiat">Updates: 0</div>
-        </div>
+  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+
+<body id="body">
+  <div class="main">
+    <h1 class="title">Smart Car Garage - <span id="environmentName"></span></h1>
+    <br />
+    <div class="flexRow pad">
+      <div onclick="postEvent('alfaRomeo',{id: 1 ,engine:{temperature: 55}})" class="car" id='alfaRomeoWrapper'>
+        <img src="./assets/alfa.png" alt="alfaRomeo" />
+        <div class="vote" id="alfaRomeo">Updates: 0</div>
       </div>
-      <div class="flexRow pad">
-        <div
-          onclick="postEvent('skoda',{id:5 ,engine:{temperature: 65}})"
-          class="car"
-        >
-          <img src="./assets/skoda.png" alt="skoda" />
-          <div class="vote" id="skoda">Updates: 0</div>
-        </div>
-        <div
-          onclick="postEvent('tesla',{id: 6,engine:{temperature: 40}})"
-          class="car"
-        >
-          <img src="./assets/tesla.png" alt="tesla" />
-          <div class="vote" id="tesla">Updates: 0</div>
-        </div>
+      <div onclick="postEvent('audi',{id:2 ,engine:{temperature: 99}})" class="car">
+        <img src="./assets/audi.png" alt="audi" id="audi" />
+        <div class="vote" id="audi">Updates: 0</div>
       </div>
-      <div class="flexRow" style="justify-content: center">
-        <div
-          onclick="postEvent('ferrari',{id:3 ,engine:{temperature: 110}})"
-          class="car"
-        >
-          <img src="./assets/ferrari.png" alt="ferrari" />
-          <div class="vote" id="ferrari">Updates: 0</div>
-        </div>
+    </div>
+    <div class="flexRow">
+      <div onclick="postEvent('vespa',{id:7})" class="car">
+        <img src="./assets/vespa.png" alt="vespa" />
+        <div class="vote" id="vespa">Updates: 0</div>
       </div>
-      <div class="simulate">
-        <h3 class="status" id="status-title">Status</h2>
+
+      <div onclick="postEvent('fiat',{id: 4,engine:{temperature: 60}})" class="car">
+        <img src="./assets/fiat.png" alt="fiat" />
+        <div class="vote" id="fiat">Updates: 0</div>
+      </div>
+    </div>
+    <div class="flexRow pad">
+      <div onclick="postEvent('skoda',{id:5 ,engine:{temperature: 65}})" class="car">
+        <img src="./assets/skoda.png" alt="skoda" />
+        <div class="vote" id="skoda">Updates: 0</div>
+      </div>
+      <div onclick="postEvent('tesla',{id: 6,engine:{temperature: 40}})" class="car">
+        <img src="./assets/tesla.png" alt="tesla" />
+        <div class="vote" id="tesla">Updates: 0</div>
+      </div>
+    </div>
+    <div class="flexRow" style="justify-content: center">
+      <div onclick="postEvent('ferrari',{id:3 ,engine:{temperature: 110}})" class="car">
+        <img src="./assets/ferrari.png" alt="ferrari" />
+        <div class="vote" id="ferrari">Updates: 0</div>
+      </div>
+    </div>
+    <div class="simulate">
+      <h3 class="status" id="status-title">Status</h2>
         <div class="innerBox">
           <img id="kidLogo" src="./assets/kid.png" alt="kid" />
           <span id="youtube-holder">
-                <video width="640" height="480" controls id="jestin-video">
-                    <source src="/assets/jestin-low-quality.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </span>
+            <video width="640" height="480" controls id="jestin-video">
+              <source src="/assets/jestin-low-quality.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </span>
         </div>
         <button onclick="simulate()" class="simulator">Simulate</button>
-      </div>
     </div>
+  </div>
 
-    <script>
-      function postEvent(car, payload) {
-        const response = fetch(`/event/${car}`, {
-          method: 'POST', // *GET, POST, PUT, DELETE, etc.
-          headers: {
-            'Content-Type': 'application/json',
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: JSON.stringify(payload), // body data type must match "Content-Type" header
-        });
-      }
-      document.getElementById('body').style.backgroundColor =
-        '#' + (((1 << 24) * Math.random()) | 0).toString(16);
-
-      const cars = [
-        {
-          carModel: 'alfaRomeo',
-          payload: {
-            id: 1,
-            engine: {
-              temperature: 55,
-            },
-          },
+  <script>
+    function postEvent(car, payload, originElement) {
+      const response = fetch(`/event/${car}`, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        headers: {
+          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/x-www-form-urlencoded',
         },
-        {
-          carModel: 'audi',
-          payload: {
-            id: 2,
-            engine: {
-              temperature: 99,
-            },
-          },
-        },
-        {
-          carModel: 'ferrari',
-          payload: {
-            id: 3,
-            engine: {
-              temperature: 110,
-            },
-          },
-        },
-        {
-          carModel: 'fiat',
-          payload: {
-            id: 4,
-            engine: {
-              temperature: 60,
-            },
-          },
-        },
-        {
-          carModel: 'skoda',
-          payload: {
-            id: 5,
-            engine: {
-              temperature: 65,
-            },
-          },
-        },
-        {
-          carModel: 'tesla',
-          payload: {
-            id: 6,
-            engine: {
-              temperature: 40,
-            },
-          },
-        },
-      ];
-
-      simulate = () => {
-        const interval = setInterval(() => {
-          let rand = Math.floor(Math.random() * 6);
-          postEvent(cars[rand].carModel, cars[rand].payload);
-        }, 500);
-        setTimeout(() => {
-          clearInterval(interval);
-          postEvent('vespa', { id: 7 });
-        }, 30000);
-      };
-
-      const socket = new WebSocket(`ws://${window.location.host}`);
-      socket.addEventListener('message', event => {
-        console.info(event.data);
-        const payload = JSON.parse(event.data);
-        if (payload.messageType === 'error') {
-          document.getElementById('kidLogo').style.display = 'none';
-          document.getElementById('youtube-holder').style.display = 'block';
-          document.getElementById('jestin-video').play();
-          document.getElementById('status-title').innerText = 'Jest fails? Jestin plays!';
-          return;
-        }
-
-        const {
-          alfaRomeo,
-          audi,
-          ferrari,
-          fiat,
-          skoda,
-          tesla,
-          vespa,
-        } = payload.state;
-        document.getElementById(
-          'alfaRomeo'
-        ).innerHTML = `Updates: ${alfaRomeo}`;
-        document.getElementById('audi').innerHTML = `Updates: ${audi}`;
-        document.getElementById('ferrari').innerHTML = `Updates: ${ferrari}`;
-        document.getElementById('fiat').innerHTML = `Updates: ${fiat}`;
-        document.getElementById('skoda').innerHTML = `Updates: ${skoda}`;
-        document.getElementById('tesla').innerHTML = `Updates: ${tesla}`;
-        document.getElementById('vespa').innerHTML = `Updates: ${vespa}`;
+        body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
-    </script>
-  </body>
+
+      $(`#${car}`).parent().effect("highlight", {
+        color: "#cccccc"
+      }, 800);
+
+    }
+    document.getElementById('body').style.backgroundColor =
+      '#' + (((1 << 24) * Math.random()) | 0).toString(16);
+
+    const cars = [{
+        carModel: 'alfaRomeo',
+        payload: {
+          id: 1,
+          engine: {
+            temperature: 55,
+          },
+        },
+      },
+      {
+        carModel: 'audi',
+        payload: {
+          id: 2,
+          engine: {
+            temperature: 99,
+          },
+        },
+      },
+      {
+        carModel: 'ferrari',
+        payload: {
+          id: 3,
+          engine: {
+            temperature: 110,
+          },
+        },
+      },
+      {
+        carModel: 'fiat',
+        payload: {
+          id: 4,
+          engine: {
+            temperature: 60,
+          },
+        },
+      },
+      {
+        carModel: 'skoda',
+        payload: {
+          id: 5,
+          engine: {
+            temperature: 65,
+          },
+        },
+      },
+      {
+        carModel: 'tesla',
+        payload: {
+          id: 6,
+          engine: {
+            temperature: 40,
+          },
+        },
+      },
+    ];
+
+    simulate = () => {
+      const interval = setInterval(() => {
+        let rand = Math.floor(Math.random() * 6);
+        postEvent(cars[rand].carModel, cars[rand].payload);
+      }, 500);
+      setTimeout(() => {
+        clearInterval(interval);
+        postEvent('vespa', {
+          id: 7
+        });
+      }, 30000);
+    };
+
+    const socket = new WebSocket(`ws://${window.location.host}`);
+    socket.addEventListener('message', event => {
+      console.log(`New WS message`, event);
+      const payload = JSON.parse(event.data);
+      if (payload.messageType === 'error') {
+        document.getElementById('kidLogo').style.display = 'none';
+        document.getElementById('youtube-holder').style.display = 'block';
+        document.getElementById('jestin-video').play();
+        document.getElementById('status-title').innerText = 'Jest fails? Jestin plays!';
+        return;
+      }
+
+      if (payload.messageType === 'environmentName') {
+        console.log(payload.environmentName);
+        document.getElementById('environmentName').innerText = payload.environmentName;
+
+        return;
+      }
+
+      const {
+        alfaRomeo,
+        audi,
+        ferrari,
+        fiat,
+        skoda,
+        tesla,
+        vespa,
+      } = payload.state;
+      document.getElementById(
+        'alfaRomeo'
+      ).innerHTML = `Updates: ${alfaRomeo}`;
+      document.getElementById('audi').innerHTML = `Updates: ${audi}`;
+      document.getElementById('ferrari').innerHTML = `Updates: ${ferrari}`;
+      document.getElementById('fiat').innerHTML = `Updates: ${fiat}`;
+      document.getElementById('skoda').innerHTML = `Updates: ${skoda}`;
+      document.getElementById('tesla').innerHTML = `Updates: ${tesla}`;
+      document.getElementById('vespa').innerHTML = `Updates: ${vespa}`;
+    });
+  </script>
+</body>
+
 </html>

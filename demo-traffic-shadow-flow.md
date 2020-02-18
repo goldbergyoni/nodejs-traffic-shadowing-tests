@@ -29,6 +29,8 @@
 - Add new functionality - if temp is too high
 - Before moving to the next code, run this in the background
 - Watch mode, choose production, "production your tests" #1
-- Code something else #1
-- Notification, something breaks #1
+    - Do something else, a notification that something breaks #1
+- It fails, I can notice that it's related to Vespa
+- Let's 'double click' on Vespa, see log
+
 - Punch:

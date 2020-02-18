@@ -10,9 +10,11 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 if (process.env.RECORD_REQUESTS === 'true') {
     app.use(expressHarRecorder({
-        sample: 0.5,
+        sampleRate: 0.5,
         saveBody: true,
         harOutputDir: "request-records-har",
+        excludeHeaders: ['Authorization'], //sanitize secrets here
+        filter: (request) => request, //sanitize secrets here
         uploadToS3: true,
         uploadToS3IntervalInSeconds: 10,
         AWSToken: process.env.AWS_TOKEN
@@ -62,7 +64,7 @@ app.post('/event/:car', (req, res) => {
 
 const processBusinessRules = (msg) => {
 
-    if (msg.engine.temperature > 120    ) {
+    if (msg.engine.temperature > 120) {
         return {
             shutoff: true
         }
@@ -83,6 +85,11 @@ const saveEventInDB = (msg) => {
 
 wss.on('connection', (ws) => {
     connections.push(ws);
+    console.log(process.env.ENVIRONMENT_NAME);
+    ws.send(JSON.stringify({
+        messageType: 'environmentName',
+        environmentName: process.env.ENVIRONMENT_NAME
+    }));
     ws.send(JSON.stringify(state));
 });
 
