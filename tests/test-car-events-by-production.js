@@ -8,7 +8,7 @@ const productionRequests = require('./production-requests.json');
 const {
     server,
     expressApp
-} = require('../index-production');
+} = require('../index-staging');
 
 beforeAll(async (done) => {
     done();

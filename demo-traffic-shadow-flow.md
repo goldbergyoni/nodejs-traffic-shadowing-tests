@@ -16,6 +16,7 @@
 - Need to record .har files, they are standard (even Chrome) - let's see example #1
 - Using an existing middleware #1
 - Let's replay production, .har files are generated in s3 #1
+RECORD_REQUESTS=true PORT=8000 ENVIRONMENT_NAME=Production node index-production.js
 
 # Replaying
 
