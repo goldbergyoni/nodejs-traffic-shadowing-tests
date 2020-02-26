@@ -16,8 +16,8 @@ const downloadHarFromCloud = async (howLongInDays, extensions, folderName) => {
             multipartUploadThreshold: 20971520, // this is the default (20 MB)
             multipartUploadSize: 15728640, // this is the default (15 MB)
             s3Options: {
-                accessKeyId: "AKIATXKTWUIGFAXR47MX",
-                secretAccessKey: "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",
+                accessKeyId: "",
+                secretAccessKey: "",
             },
         });
 
