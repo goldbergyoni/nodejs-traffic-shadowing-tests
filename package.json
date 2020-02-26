@@ -26,6 +26,7 @@
     "@types/supertest": "^2.0.8",
     "@types/uuid": "^3.4.7",
     "body-parser": "^1.19.0",
+    "corona": "0.0.3",
     "express": "^4.17.1",
     "express-har-capture": "0.0.0",
     "goreplay_middleware": "^1.0.0",

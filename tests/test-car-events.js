@@ -6,7 +6,7 @@ const uuid = require('uuid');
 const {
     server,
     expressApp
-} = require('../index-production');
+} = require('../index-staging');
 
 beforeAll(async (done) => {
     done()

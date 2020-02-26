@@ -3,14 +3,11 @@ const path = require('path');
 const s3 = require('s3');
 
 module.exports = async () => {
-    console.log('Starting');
-    const allRequests = [];
-
-    await downloadHarFromCloud(7, "har");
-    console.log('Setup end');
+    await downloadHarFromCloud(7, "har", "production-har-files");
+    await SaveInSingleJson("production-har-files", "production-inputs.json");
 };
 
-const downloadHarFromCloud = async (howLongInDays, extensions) => {
+const downloadHarFromCloud = async (howLongInDays, extensions, folderName) => {
     return new Promise((resolve, reject) => {
         const client = s3.createClient({
             maxAsyncS3: 20, // this is the default
@@ -25,7 +22,7 @@ const downloadHarFromCloud = async (howLongInDays, extensions) => {
         });
 
         const params = {
-            localDir: "./tests/production-har-files",
+            localDir: `./tests/${folderName}`,
             deleteRemoved: true, // default false, whether to remove s3 objects
             // that have no corresponding local file.
 
@@ -38,14 +35,14 @@ const downloadHarFromCloud = async (howLongInDays, extensions) => {
         };
         const downloader = client.downloadDir(params);
         downloader.on('error', function (err) {
-            console.error("unable to sync:", err.stack);
+
             reject(err);
         });
         downloader.on('progress', function () {
-            console.log("progress", downloader.progressAmount, downloader.progressTotal);
+
         });
         downloader.on('end', function () {
-            console.log("done downloading");
+
             resolve();
         });
 
@@ -53,8 +50,11 @@ const downloadHarFromCloud = async (howLongInDays, extensions) => {
 
 }
 
-const SaveInSingleJson = async (filterMethod) => {
-    const allHarFiles = await fs.readdir("./tests/production-har-files", {
+const SaveInSingleJson = async (folderName, outputFileName, filterMethod) => {
+
+    const allRequests = [];
+
+    const allHarFiles = await fs.readdir(`./tests/${folderName}`, {
         withFileTypes: true
     });
 
@@ -64,7 +64,7 @@ const SaveInSingleJson = async (filterMethod) => {
             continue;
         }
 
-        const fileContent = await fs.readFile(path.join('./tests/production-har-files', fileToProcess.name), {
+        const fileContent = await fs.readFile(path.join(`./tests/${folderName}`, fileToProcess.name), {
             encoding: 'utf8'
         });
 
@@ -76,11 +76,11 @@ const SaveInSingleJson = async (filterMethod) => {
         }
     }
 
-    await fs.writeFile(path.join(__dirname, "production-requests.json"), JSON.stringify({
-        all: allRequests
-    }), {
-        encoding: 'utf8',
-        flag: 'w'
-    });
+    // await fs.writeFile(path.join(__dirname, outputFileName), JSON.stringify({
+    //     all: allRequests
+    // }), {
+    //     encoding: 'utf8',
+    //     flag: 'w'
+    // });
 
 }
