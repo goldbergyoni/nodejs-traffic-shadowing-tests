@@ -9,6 +9,7 @@ const app = express();
 app.use(express.static('public'));
 app.use(bodyParser.json());
 if (process.env.RECORD_REQUESTS === 'true') {
+    //© LoadMill
     app.use(expressHarRecorder({
         sampleRate: 0.5,
         saveBody: true,

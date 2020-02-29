@@ -28,7 +28,7 @@
         <div class="vote" id="alfaRomeo">Updates: 0</div>
       </div>
       <div onclick="postEvent('audi',{id:2 ,engine:{temperature: 99}})" class="car">
-        <img src="./assets/audi.png" alt="audi" id="audi" />
+        <img src="./assets/audi.jpg" />
         <div class="vote" id="audi">Updates: 0</div>
       </div>
     </div>
@@ -55,7 +55,7 @@
     </div>
     <div class="flexRow" style="justify-content: center">
       <div onclick="postEvent('ferrari',{id:3 ,engine:{temperature: 110}})" class="car">
-        <img src="./assets/ferrari.png" alt="ferrari" />
+        <img src="./assets/ferrari.jpg" alt="ferrari" />
         <div class="vote" id="ferrari">Updates: 0</div>
       </div>
     </div>
@@ -85,10 +85,6 @@
         },
         body: JSON.stringify(payload), // body data type must match "Content-Type" header
       });
-
-      $(`#${car}`).parent().effect("highlight", {
-        color: "#cccccc"
-      }, 800);
 
     }
     document.getElementById('body').style.backgroundColor =
@@ -154,11 +150,14 @@
       const interval = setInterval(() => {
         let rand = Math.floor(Math.random() * 6);
         postEvent(cars[rand].carModel, cars[rand].payload);
-      }, 500);
+        console.log(`Sending event for ${cars[rand].carModel}`);
+      }, 400);
       setTimeout(() => {
         clearInterval(interval);
         postEvent('vespa', {
-          id: 7
+          id: 7,
+          oil: 89,
+          tiersPressure: "good"
         });
       }, 30000);
     };
@@ -179,7 +178,6 @@
       }
 
       if (payload.messageType === 'environmentName') {
-        console.log(payload.environmentName);
         document.getElementById('environmentName').innerText = payload.environmentName;
 
         return;
@@ -194,15 +192,18 @@
         tesla,
         vespa,
       } = payload.state;
-      document.getElementById(
-        'alfaRomeo'
-      ).innerHTML = `Updates: ${alfaRomeo}`;
-      document.getElementById('audi').innerHTML = `Updates: ${audi}`;
-      document.getElementById('ferrari').innerHTML = `Updates: ${ferrari}`;
-      document.getElementById('fiat').innerHTML = `Updates: ${fiat}`;
-      document.getElementById('skoda').innerHTML = `Updates: ${skoda}`;
-      document.getElementById('tesla').innerHTML = `Updates: ${tesla}`;
-      document.getElementById('vespa').innerHTML = `Updates: ${vespa}`;
+      for (const key in payload.state) {
+        if (payload.state.hasOwnProperty(key)) {
+          const previousValue = document.getElementById(key).innerHTML;
+          const newValue = `Updates: ${payload.state[key]}`;
+          document.getElementById(key).innerHTML = newValue;
+          if (previousValue !== newValue) {
+            $(`#${key}`).parent().effect("highlight", {
+              color: "#cccccc"
+            }, 800);
+          }
+        }
+      }
     });
   </script>
 </body>

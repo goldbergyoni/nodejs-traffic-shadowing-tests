@@ -63,7 +63,6 @@ app.post('/event/:car', (req, res) => {
 });
 
 const processBusinessRules = (msg) => {
-
     if (msg.engine.temperature > 120) {
         return {
             shutoff: true
